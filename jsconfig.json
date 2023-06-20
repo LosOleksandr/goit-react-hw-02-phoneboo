@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": ["src", "src/components/FeedbackOptions/index.js", "src/components/FeedbackOptions/FeedbackOptions.jsx"]
+}
