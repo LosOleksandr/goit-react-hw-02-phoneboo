@@ -3,28 +3,41 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import shortid from 'shortid';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
+import {
+  StyledForm,
+  StyledField,
+  StyledLabel,
+  SumbitBtn,
+  StyledErrorMessage,
+} from './PhonebookForm.styled';
 
 export default class PhonebookForm extends Component {
   nameInputId = shortid.generate();
   numberInputId = shortid.generate();
 
-  userSchema = yup.object().shape({
+  initialValues = {
+    name: '',
+    number: '',
+  };
+
+  userSchema = yup.object({
     name: yup
       .string()
+      .required('Name is required')
       .matches(
         /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
         'Only letters are allowed'
       )
-
-      .required('Name is required'),
+      .trim()
+      .min(4, 'Name must be at least 4 charactares'),
     number: yup
       .string()
+      .trim()
+      .required('Number is required')
       .matches(
         /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
         'Incorrect format number'
-      )
-
-      .required('Number is required'),
+      ),
   });
 
   onSubmit = (values, { resetForm }) => {
@@ -35,20 +48,20 @@ export default class PhonebookForm extends Component {
   render() {
     return (
       <Formik
-        initialValues={{ name: '', number: '' }}
+        initialValues={this.initialValues}
         validationSchema={this.userSchema}
-        validateOnChange={true}
+        validateOnBlur={false}
         onSubmit={this.onSubmit}
       >
-        <Form autoComplete="off" action="">
-          <label htmlFor={this.nameInputId}>Name</label>
-          <Field id={this.nameInputId} name="name" />
-          <ErrorMessage name="name" component="div" />
-          <label htmlFor={this.numberInputId}>Number</label>
-          <Field id={this.numberInputId} name="number"></Field>
-          <ErrorMessage name="number" component="div" />
-          <button type="submit">Add Contact</button>
-        </Form>
+        <StyledForm autoComplete="off" action="">
+          <StyledLabel htmlFor={this.nameInputId}>Name</StyledLabel>
+          <StyledField id={this.nameInputId} name="name" />
+          <StyledErrorMessage name="name" component="small" />
+          <StyledLabel htmlFor={this.numberInputId}>Number</StyledLabel>
+          <StyledField id={this.numberInputId} name="number" />
+          <StyledErrorMessage name="number" component="small" />
+          <SumbitBtn type="submit">Add Contact</SumbitBtn>
+        </StyledForm>
       </Formik>
     );
   }

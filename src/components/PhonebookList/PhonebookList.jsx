@@ -1,20 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  ListContainer,
+  ListItem,
+  ListText,
+  ListBtn,
+} from './PhonebookList.styled';
 
 export default function PhonebookList({ contacts, deleteContact }) {
   return (
-    <ul>
+    <ListContainer>
       {contacts.map(({ id, name, number }) => (
-        <li key={id}>
-          <p>
+        <ListItem key={id}>
+          <ListText>
             {name}: {number}
-          </p>
-          <button onClick={() => deleteContact(id)} type="button">
+          </ListText>
+          <ListBtn onClick={() => deleteContact(id)} type="button">
             Delete
-          </button>
-        </li>
+          </ListBtn>
+        </ListItem>
       ))}
-    </ul>
+    </ListContainer>
   );
 }
 

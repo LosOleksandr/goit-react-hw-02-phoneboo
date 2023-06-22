@@ -1,20 +1,21 @@
 import React from 'react';
 import shortid from 'shortid';
 import PropTypes from 'prop-types';
+import { FilterContainer, FilterLabel, FilterInput } from './Filter.styled';
 
 export default function Filter({ value, onChange }) {
   const searchId = shortid.generate();
   return (
-    <label htmlFor={searchId}>
-      Search
-      <input
+    <FilterContainer>
+      <FilterLabel htmlFor={searchId}>Search</FilterLabel>
+      <FilterInput
         id={searchId}
         name="search"
         type="text"
         value={value}
         onChange={onChange}
       />
-    </label>
+    </FilterContainer>
   );
 }
 

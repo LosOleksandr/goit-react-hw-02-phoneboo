@@ -4,6 +4,7 @@ import Filter from 'components/Filter/Filter';
 import PhonebookForm from 'components/PhonebookForm';
 import PhonebookList from 'components/PhonebookList';
 import Section from 'components/Section';
+import { Container } from 'App.styled';
 
 export default class App extends Component {
   state = {
@@ -52,15 +53,12 @@ export default class App extends Component {
     );
 
     return (
-      <div>
+      <Container>
         <Section title="Phonebook">
           <PhonebookForm onSubmit={this.addContact} />
         </Section>
         <Section title="Contacts">
           <Filter value={this.state.filter} onChange={this.filterContacts} />
-          {!filteredContacts.length && contacts.length ? (
-            <p>There are any matches!</p>
-          ) : null}
           {contacts.length ? (
             <PhonebookList
               contacts={filteredContacts}
@@ -69,8 +67,11 @@ export default class App extends Component {
           ) : (
             <p>You don't have any contacts!</p>
           )}
+          {!filteredContacts.length && contacts.length ? (
+            <p>There are any matches!</p>
+          ) : null}
         </Section>
-      </div>
+      </Container>
     );
   }
 }

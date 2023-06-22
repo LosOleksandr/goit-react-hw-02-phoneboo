@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import emotionReset from 'emotion-reset';
 import { Global, css } from '@emotion/react';
-import './index.css';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -10,13 +9,12 @@ root.render(
   <React.StrictMode>
     <Global
       styles={css`
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
         ${emotionReset}
 
-        *, *::after, *::before {
-          box-sizing: border-box;
-          -moz-osx-font-smoothing: grayscale;
-          -webkit-font-smoothing: antialiased;
-          font-smoothing: antialiased;
+        body {
+          width: 100%;
+          font-family: 'Montserrat', sans-serif;
         }
       `}
     />
