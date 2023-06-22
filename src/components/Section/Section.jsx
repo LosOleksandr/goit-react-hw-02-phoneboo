@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SectionContainer, SectionTitle } from './Section.styled';
 
 export default function Section({ title, children }) {
   return (
-    <SectionContainer>
-      <SectionTitle>{title ? title : 'Default Title'}</SectionTitle>
+    <section>
+      <h2>{title && title}</h2>
       {children}
-    </SectionContainer>
+    </section>
   );
 }
 
 Section.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
 };

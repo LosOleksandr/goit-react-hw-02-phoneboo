@@ -1,56 +1,76 @@
+import shortid from 'shortid';
 import React, { Component } from 'react';
+import Filter from 'components/Filter/Filter';
+import PhonebookForm from 'components/PhonebookForm';
+import PhonebookList from 'components/PhonebookList';
 import Section from 'components/Section';
-import FeedbackOptions from 'components/FeedbackOptions';
-import Statistics from 'components/Statistics';
-import { Container, Message } from 'App.styled';
 
 export default class App extends Component {
   state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+    contacts: [],
+    filter: '',
   };
 
-  onLeaveFeedback = evt => {
+  addContact = data => {
+    data = {
+      id: shortid.generate(),
+      ...data,
+    };
+    const isContactExists = this.state.contacts.some(
+      ({ name, number }) => name === data.name || number === data.number
+    );
+
+    if (isContactExists) {
+      alert('Contact is already exist');
+      return;
+    }
+
+    this.setState(({ contacts }) => {
+      return { contacts: [data, ...contacts] };
+    });
+  };
+
+  deleteContact = deletedId => {
     this.setState(prevState => {
-      const btnName = evt.target.name;
       return {
-        [btnName]: prevState[btnName] + 1,
+        contacts: prevState.contacts.filter(({ id }) => id !== deletedId),
       };
     });
   };
 
-  getTotalFeedbacks = () => {
-    return Object.values(this.state).reduce((acc, value) => acc + value, 0);
-  };
-
-  getPercentage = () => {
-    return Number(
-      ((this.state.good / this.getTotalFeedbacks()) * 100).toFixed()
-    );
+  filterContacts = ({ target }) => {
+    this.setState({
+      filter: target.value,
+    });
   };
 
   render() {
+    const { contacts } = this.state;
+    const normalizedFilter = this.state.filter.toLowerCase();
+    const filteredContacts = this.state.contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizedFilter)
+    );
+
     return (
-      <Container>
-        <Section title="Please leave your feedback">
-          <FeedbackOptions
-            options={Object.keys(this.state)}
-            onLeaveFeedback={this.onLeaveFeedback}
-          />
+      <div>
+        <Section title="Phonebook">
+          <PhonebookForm onSubmit={this.addContact} />
         </Section>
-        <Section title="Statistics">
-          {this.getTotalFeedbacks() ? (
-            <Statistics
-              options={Object.entries(this.state)}
-              total={this.getTotalFeedbacks()}
-              percentage={this.getPercentage()}
+        <Section title="Contacts">
+          <Filter value={this.state.filter} onChange={this.filterContacts} />
+          {!filteredContacts.length && contacts.length ? (
+            <p>There are any matches!</p>
+          ) : null}
+          {contacts.length ? (
+            <PhonebookList
+              contacts={filteredContacts}
+              deleteContact={this.deleteContact}
             />
           ) : (
-            <Message>No feedback given!</Message>
+            <p>You don't have any contacts!</p>
           )}
         </Section>
-      </Container>
+      </div>
     );
   }
 }
