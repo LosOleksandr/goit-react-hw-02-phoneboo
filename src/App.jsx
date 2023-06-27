@@ -45,6 +45,17 @@ export default class App extends Component {
     });
   };
 
+  componentDidUpdate(prexState) {
+    if (this.state.contacts !== prexState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+  componentDidMount() {
+    this.setState({
+      contacts: JSON.parse(localStorage.getItem('contacts')),
+    });
+  }
+
   render() {
     const { contacts } = this.state;
     const normalizedFilter = this.state.filter.toLowerCase();
