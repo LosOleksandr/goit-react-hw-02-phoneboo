@@ -45,8 +45,8 @@ export default class App extends Component {
     });
   };
 
-  componentDidUpdate(prexState) {
-    if (this.state.contacts !== prexState.contacts) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
   }
